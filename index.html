@@ -1,1 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Sona 👑❤️</title>
 
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(-45deg,#ff4e50,#8e2de2,#ff758c,#ff7eb3);
+background-size:400% 400%;
+animation:gradientBG 8s ease infinite;
+color:white;
+text-align:center;
+overflow-x:hidden;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+@keyframes gradientBG{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+/* LOCK SCREEN */
+#lockScreen{
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+}
+
+input{
+padding:12px;
+font-size:16px;
+border-radius:25px;
+border:none;
+width:220px;
+margin-top:10px;
+}
+
+button{
+padding:12px 22px;
+font-size:16px;
+border:none;
+border-radius:25px;
+background:gold;
+cursor:pointer;
+margin-top:12px;
+font-weight:bold;
+}
+
+/* Main Container */
+.container{
+width:100%;
+max-width:600px;
+padding:20px;
+}
+
+.glitter{
+font-size:clamp(26px,5vw,42px);
+margin-top:20px;
+animation:glow 1.5s infinite alternate;
+}
+@keyframes glow{
+from{text-shadow:0 0 10px gold;}
+to{text-shadow:0 0 35px white;}
+}
+
+#countdown{
+font-size:clamp(18px,4vw,24px);
+margin:15px 0;
+}
+
+.slideshow{
+width:100%;
+aspect-ratio:1/1;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 0 25px rgba(255,255,255,0.6);
+}
+.slideshow img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.cake{
+font-size:clamp(60px,12vw,90px);
+margin:20px 0;
+cursor:pointer;
+transition:0.3s;
+}
+.cake:hover{transform:scale(1.1);}
+
+.rose{
+position:fixed;
+top:-50px;
+font-size:22px;
+animation:fall linear infinite;
+}
+@keyframes fall{
+to{transform:translateY(110vh);}
+}
+
+/* LOVE LETTER */
+#letter{
+position:fixed;
+width:90%;
+max-width:420px;
+background:white;
+color:black;
+padding:25px;
+border-radius:20px;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+display:none;
+z-index:8000;
+box-shadow:0 0 30px rgba(0,0,0,0.4);
+}
+
+.typing{
+white-space:pre-line;
+line-height:1.6;
+font-size:16px;
+min-height:150px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="lockScreen">
+<h2>Enter Password ❤️</h2>
+<input type="password" id="pass">
+<button onclick="unlock()">Open Surprise 👑</button>
+</div>
+
+<div class="container">
+
+<h1 class="glitter">Happy Birthday Sona 👑❤️</h1>
+
+<div id="countdown"></div>
+
+<div class="slideshow">
+<img id="slide" src="photo1.jpg">
+</div>
+
+<div class="cake" onclick="cutCake()">🎂</div>
+<p id="cakeMsg"></p>
+
+<button onclick="openLetter()">Open Love Letter 💌</button>
+
+</div>
+
+<div id="letter">
+<h2>For You, Sona ❤️</h2>
+<div class="typing" id="typedText"></div>
+<button onclick="closeLetter()">Close</button>
+</div>
+
+<audio id="bgMusic" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* PASSWORD */
+function unlock(){
+if(document.getElementById("pass").value==="1502"){
+document.getElementById("lockScreen").style.display="none";
+document.getElementById("bgMusic").play();
+}else{
+alert("Wrong Password 😢");
+}
+}
+
+/* COUNTDOWN */
+var birthday=new Date("Feb 15, 2026 00:00:00").getTime();
+setInterval(function(){
+var now=new Date().getTime();
+var gap=birthday-now;
+if(gap<0){document.getElementById("countdown").innerHTML="🎉 It's Her Special Day! 🎉";return;}
+var d=Math.floor(gap/(1000*60*60*24));
+var h=Math.floor((gap%(1000*60*60*24))/(1000*60*60));
+var m=Math.floor((gap%(1000*60*60))/(1000*60));
+var s=Math.floor((gap%(1000*60))/1000);
+document.getElementById("countdown").innerHTML=
+"⏳ "+d+"d "+h+"h "+m+"m "+s+"s ";
+},1000);
+
+/* SLIDESHOW */
+var images=["photo1.jpg","photo2.jpg","photo3.jpg"];
+var x=0;
+setInterval(function(){
+x=(x+1)%images.length;
+document.getElementById("slide").src=images[x];
+},3000);
+
+/* CAKE */
+function cutCake(){
+document.getElementById("cakeMsg").innerHTML=
+"🎉 Happy Birthday Sona 🎉 I Love You ❤️";
+for(let i=0;i<80;i++){
+let spark=document.createElement("div");
+spark.style.position="fixed";
+spark.style.left=Math.random()*100+"vw";
+spark.style.top=Math.random()*100+"vh";
+spark.innerHTML="✨";
+document.body.appendChild(spark);
+setTimeout(()=>{spark.remove();},1000);
+}
+}
+
+/* ROSES */
+setInterval(function(){
+let rose=document.createElement("div");
+rose.className="rose";
+rose.style.left=Math.random()*100+"vw";
+rose.style.animationDuration=(Math.random()*3+3)+"s";
+rose.innerHTML="🌹";
+document.body.appendChild(rose);
+setTimeout(()=>{rose.remove();},6000);
+},700);
+
+/* LOVE LETTER TYPING */
+var text=`Pata nahi kaise explain karun,
+
+lekin aapki presence meri life ko calm bana deti hai.
+
+Main shayad perfect words nahi jaanta,
+lekin itna zaroor jaanta hoon ki aapki smile dekhna mujhe sach me achha lagta hai.
+
+Aise hi hamesha muskurati rahiye…
+aapko dekh kar main bhi khush ho jaya karunga.
+
+Happy Birthday, Sona ❤️`;
+
+function openLetter(){
+document.getElementById("letter").style.display="block";
+let i=0;
+document.getElementById("typedText").innerHTML="";
+let interval=setInterval(()=>{
+document.getElementById("typedText").innerHTML+=text.charAt(i);
+i++;
+if(i>=text.length){clearInterval(interval);}
+},40);
+}
+
+function closeLetter(){
+document.getElementById("letter").style.display="none";
+}
+
+</script>
+
+</body>
+</html>
