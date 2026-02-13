@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title> Happy Birthday Cutiee 🫂 ❤️</title>
+<title>Happy Birthday Cutiee 🫂 ❤️</title>
 
 <style>
 *{
@@ -33,8 +33,38 @@ filter:blur(10px) brightness(60%);
 z-index:-2;
 }
 
+/* 🔐 Password Screen */
+#lockScreen{
+position:absolute;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:5;
+}
+
+#lockScreen input{
+padding:10px;
+border:none;
+border-radius:8px;
+margin:10px;
+}
+
+#lockScreen button{
+padding:10px 20px;
+border:none;
+border-radius:20px;
+background:pink;
+font-weight:bold;
+cursor:pointer;
+}
+
 /* 💎 Glass Card */
 .container{
+display:none;
 background:rgba(255,255,255,0.1);
 backdrop-filter:blur(15px);
 padding:30px;
@@ -50,11 +80,6 @@ from{opacity:0; transform:scale(0.9);}
 to{opacity:1; transform:scale(1);}
 }
 
-h1{
-margin-bottom:15px;
-}
-
-/* Blinking Cursor */
 .cursor{
 animation:blink 1s infinite;
 }
@@ -65,7 +90,7 @@ animation:blink 1s infinite;
 100%{opacity:1;}
 }
 
-/* 📸 Slideshow */
+/* Slideshow */
 .slideshow{
 position:relative;
 width:100%;
@@ -87,7 +112,7 @@ transition:opacity 1s;
 opacity:1;
 }
 
-/* 💖 Button */
+/* Button */
 button{
 padding:12px 25px;
 border:none;
@@ -97,16 +122,9 @@ color:white;
 font-weight:bold;
 cursor:pointer;
 box-shadow:0 0 20px hotpink;
-animation:pulse 2s infinite;
 }
 
-@keyframes pulse{
-0%{box-shadow:0 0 10px hotpink;}
-50%{box-shadow:0 0 25px red;}
-100%{box-shadow:0 0 10px hotpink;}
-}
-
-/* 💌 Love Letter */
+/* Love Letter */
 #letter{
 display:none;
 position:fixed;
@@ -127,7 +145,7 @@ z-index:10;
 white-space:pre-line;
 }
 
-/* ❤️ Floating Hearts */
+/* Floating Hearts */
 .heart{
 position:fixed;
 bottom:-10px;
@@ -145,7 +163,15 @@ to{transform:translateY(-110vh) scale(1.5);}
 
 <body>
 
-<div class="container">
+<!-- 🔐 LOCK SCREEN -->
+<div id="lockScreen">
+<h2>Enter Password ❤️</h2>
+<input type="password" id="passwordInput">
+<button onclick="checkPassword()">Unlock</button>
+</div>
+
+<!-- 💎 MAIN CONTENT -->
+<div class="container" id="mainContent">
 
 <h1>
 <span id="typingTitle"></span>
@@ -161,7 +187,7 @@ to{transform:translateY(-110vh) scale(1.5);}
 <button onclick="openLetter()">Only For You</button>
 </div>
 
-<!-- 💌 Love Letter -->
+<!-- 💌 LETTER -->
 <div id="letter">
 <h3>My Love ❤️</h3>
 <p class="typewriter" id="letterText"></p>
@@ -175,7 +201,21 @@ to{transform:translateY(-110vh) scale(1.5);}
 
 <script>
 
-/* 🎬 Title Typewriter */
+/* 🔐 Password Check */
+function checkPassword(){
+const correctPassword="1502";   // 🔑 Change password here
+const userPassword=document.getElementById("passwordInput").value;
+
+if(userPassword===correctPassword){
+document.getElementById("lockScreen").style.display="none";
+document.getElementById("mainContent").style.display="block";
+typeTitle();
+}else{
+alert("Wrong Password 😢");
+}
+}
+
+/* Title Typewriter */
 const titleText="Only For You 💖";
 let titleIndex=0;
 
@@ -187,11 +227,7 @@ setTimeout(typeTitle,80);
 }
 }
 
-window.onload=function(){
-typeTitle();
-};
-
-/* 📸 Slideshow */
+/* Slideshow */
 let slides=document.querySelectorAll(".slideshow img");
 let index=0;
 setInterval(()=>{
@@ -200,8 +236,8 @@ index=(index+1)%slides.length;
 slides[index].classList.add("active");
 },3000);
 
-/* 💌 Love Letter Typewriter */
-const message=`Hearty felicitations on your birthday buddy 💖
+/* Love Letter */
+const message=`Happy Birthday Meri Jaan 💖
 
 Tum meri life ka sabse special hissa ho.
 Main hamesha tumhare saath rahunga.
@@ -229,7 +265,7 @@ function closeLetter(){
 document.getElementById("letter").style.display="none";
 }
 
-/* ❤️ Floating Hearts */
+/* Floating Hearts */
 setInterval(()=>{
 let heart=document.createElement("div");
 heart.className="heart";
