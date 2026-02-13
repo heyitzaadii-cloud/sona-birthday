@@ -14,73 +14,27 @@ font-family:'Segoe UI',sans-serif;
 
 body{
 height:100vh;
-overflow:hidden;
 display:flex;
 justify-content:center;
 align-items:center;
+overflow:hidden;
 color:white;
 position:relative;
 }
 
-/* 🌫 Background Blur */
+/* 🌫 Background */
 body::before{
 content:"";
 position:fixed;
 width:100%;
 height:100%;
 background:url("IMG-20260213-WA0000.jpg") center/cover no-repeat;
-filter:blur(12px) brightness(60%);
+filter:blur(10px) brightness(60%);
 z-index:-2;
 }
 
-/* 🎆 Fireworks */
-canvas{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:-1;
-pointer-events:none;
-}
-
-/* 🔐 Password Screen */
-#passwordScreen{
-position:absolute;
-width:100%;
-height:100%;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-background:rgba(0,0,0,0.8);
-}
-
-input{
-padding:10px;
-border:none;
-border-radius:8px;
-margin:10px;
-}
-
-button{
-padding:10px 25px;
-border:none;
-border-radius:25px;
-background:linear-gradient(45deg,pink,hotpink);
-color:white;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-}
-
-button:hover{
-transform:scale(1.05);
-}
-
-/* 💎 Main Card */
+/* 💎 Glass Card */
 .container{
-display:none;
 background:rgba(255,255,255,0.1);
 backdrop-filter:blur(15px);
 padding:30px;
@@ -88,7 +42,7 @@ border-radius:25px;
 text-align:center;
 box-shadow:0 0 40px rgba(255,0,100,0.4);
 width:320px;
-animation:fadeIn 1s ease forwards;
+animation:fadeIn 1.2s ease forwards;
 }
 
 @keyframes fadeIn{
@@ -97,14 +51,26 @@ to{opacity:1; transform:scale(1);}
 }
 
 h1{
-margin-bottom:20px;
+margin-bottom:15px;
 }
 
-/* Slideshow */
+/* Blinking Cursor */
+.cursor{
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1;}
+50%{opacity:0;}
+100%{opacity:1;}
+}
+
+/* 📸 Slideshow */
 .slideshow{
 position:relative;
 width:100%;
 height:350px;
+margin-bottom:15px;
 }
 
 .slideshow img{
@@ -121,7 +87,26 @@ transition:opacity 1s;
 opacity:1;
 }
 
-/* 💌 Love Letter Popup */
+/* 💖 Button */
+button{
+padding:12px 25px;
+border:none;
+border-radius:25px;
+background:linear-gradient(45deg,pink,hotpink);
+color:white;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 0 20px hotpink;
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+0%{box-shadow:0 0 10px hotpink;}
+50%{box-shadow:0 0 25px red;}
+100%{box-shadow:0 0 10px hotpink;}
+}
+
+/* 💌 Love Letter */
 #letter{
 display:none;
 position:fixed;
@@ -137,21 +122,35 @@ text-align:center;
 box-shadow:0 0 30px red;
 z-index:10;
 }
+
+.typewriter{
+white-space:pre-line;
+}
+
+/* ❤️ Floating Hearts */
+.heart{
+position:fixed;
+bottom:-10px;
+font-size:20px;
+color:pink;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+from{transform:translateY(0) scale(1);}
+to{transform:translateY(-110vh) scale(1.5);}
+}
 </style>
 </head>
 
 <body>
 
-<!-- Password -->
-<div id="passwordScreen">
-<h2>Enter Password ❤️</h2>
-<input type="password" id="pass">
-<button onclick="checkPass()">Enter</button>
-</div>
+<div class="container">
 
-<!-- Main Content -->
-<div class="container" id="mainContent">
-<h1>Only For You 💖</h1>
+<h1>
+<span id="typingTitle"></span>
+<span class="cursor">|</span>
+</h1>
 
 <div class="slideshow">
 <img src="IMG-20260213-WA0001.jpg" class="active">
@@ -159,38 +158,40 @@ z-index:10;
 <img src="IMG-20260213-WA0003.jpg">
 </div>
 
-<br>
 <button onclick="openLetter()">Only For You</button>
 </div>
 
-<!-- Love Letter -->
+<!-- 💌 Love Letter -->
 <div id="letter">
 <h3>My Love ❤️</h3>
-<p>
-Happy Birthday Meri Jaan 💖<br><br>
-Tum meri life ka sabse special hissa ho ✨<br>
-Main hamesha tumhare saath rahunga 💕<br><br>
-I Love You Forever ❤️
-</p>
+<p class="typewriter" id="letterText"></p>
 <br>
 <button onclick="closeLetter()">Close</button>
 </div>
 
-<canvas id="fireworks"></canvas>
+<audio autoplay loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-function checkPass(){
-var password=document.getElementById("pass").value;
-if(password==="1234"){
-document.getElementById("passwordScreen").style.display="none";
-document.getElementById("mainContent").style.display="block";
-}
-else{
-alert("Wrong Password 😢");
+
+/* 🎬 Title Typewriter */
+const titleText="Only For You 💖";
+let titleIndex=0;
+
+function typeTitle(){
+if(titleIndex<titleText.length){
+document.getElementById("typingTitle").innerHTML+=titleText.charAt(titleIndex);
+titleIndex++;
+setTimeout(typeTitle,80);
 }
 }
 
-/* Slideshow */
+window.onload=function(){
+typeTitle();
+};
+
+/* 📸 Slideshow */
 let slides=document.querySelectorAll(".slideshow img");
 let index=0;
 setInterval(()=>{
@@ -199,55 +200,46 @@ index=(index+1)%slides.length;
 slides[index].classList.add("active");
 },3000);
 
-/* Love Letter */
+/* 💌 Love Letter Typewriter */
+const message=`Happy Birthday Meri Jaan 💖
+
+Tum meri life ka sabse special hissa ho.
+Main hamesha tumhare saath rahunga.
+
+I Love You Forever ❤️`;
+
+let i=0;
+
+function typeLetter(){
+if(i<message.length){
+document.getElementById("letterText").innerHTML+=message.charAt(i);
+i++;
+setTimeout(typeLetter,40);
+}
+}
+
 function openLetter(){
 document.getElementById("letter").style.display="block";
+document.getElementById("letterText").innerHTML="";
+i=0;
+typeLetter();
 }
+
 function closeLetter(){
 document.getElementById("letter").style.display="none";
 }
 
-/* Fireworks */
-const canvas=document.getElementById("fireworks");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+/* ❤️ Floating Hearts */
+setInterval(()=>{
+let heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(Math.random()*20+15)+"px";
+document.body.appendChild(heart);
+setTimeout(()=>{heart.remove();},6000);
+},500);
 
-let particles=[];
-function createFirework(){
-let x=Math.random()*canvas.width;
-let y=Math.random()*canvas.height/2;
-for(let i=0;i<50;i++){
-particles.push({
-x:x,
-y:y,
-speed:Math.random()*4+2,
-angle:Math.random()*2*Math.PI,
-radius:Math.random()*3+1,
-color:"hsl("+Math.random()*360+",100%,50%)"
-});
-}
-}
-
-function animate(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
-particles.forEach((p,i)=>{
-p.x+=Math.cos(p.angle)*p.speed;
-p.y+=Math.sin(p.angle)*p.speed;
-p.radius*=0.96;
-
-ctx.beginPath();
-ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
-ctx.fillStyle=p.color;
-ctx.fill();
-
-if(p.radius<0.5) particles.splice(i,1);
-});
-requestAnimationFrame(animate);
-}
-
-setInterval(createFirework,1500);
-animate();
 </script>
 
 </body>
