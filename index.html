@@ -1,331 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Happy Birthday Sona 👑❤️</title>
+<title>Happy Birthday Sona ❤️</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-
 body{
-font-family:'Segoe UI',sans-serif;
-color:white;
-text-align:center;
-overflow-x:hidden;
-min-height:100vh;
-display:flex;
-flex-direction:column;
-align-items:center;
-position:relative;
+margin:0;
+padding:0;
+overflow:hidden;
+font-family:cursive;
+background:url("IMG-20260213-WA0000.jpg") no-repeat center center/cover;
 }
 
-/* BLUR BACKGROUND IMAGE */
 body::before{
 content:"";
-position:fixed;
+position:absolute;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:url("background.jpg") center/cover no-repeat;
-filter:blur(12px) brightness(0.6);
-z-index:-2;
-}
-
-/* Animated Overlay Glow */
-body::after{
-content:"";
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:linear-gradient(-45deg,#ff4e50,#8e2de2,#ff758c,#ff7eb3);
-background-size:400% 400%;
-animation:gradientBG 8s ease infinite;
-opacity:0.4;
+backdrop-filter:blur(8px);
+background:rgba(0,0,0,0.4);
 z-index:-1;
 }
 
-@keyframes gradientBG{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
-
-canvas{
-position:fixed;
-top:0;
-left:0;
-pointer-events:none;
-z-index:5000;
-}
-
-/* LOCK SCREEN */
-#lockScreen{
-position:fixed;
-width:100%;
-height:100%;
-background:black;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:9999;
-}
-
-input{
-padding:12px;
-font-size:16px;
-border-radius:25px;
-border:none;
-width:220px;
-margin-top:10px;
-}
-
-button{
-padding:12px 22px;
-font-size:16px;
-border:none;
-border-radius:25px;
-background:gold;
-cursor:pointer;
-margin-top:12px;
-font-weight:bold;
-}
-
-.container{
-width:100%;
-max-width:600px;
-padding:20px;
-}
-
-.glitter{
-font-size:clamp(26px,5vw,42px);
-margin-top:20px;
-animation:glow 1.5s infinite alternate;
-}
-@keyframes glow{
-from{text-shadow:0 0 10px gold;}
-to{text-shadow:0 0 35px white;}
-}
-
-#countdown{
-font-size:clamp(18px,4vw,24px);
-margin:15px 0;
+h1{
+text-align:center;
+color:#fff;
+margin-top:40px;
+font-size:40px;
+text-shadow:0 0 15px pink;
 }
 
 .slideshow{
-width:100%;
-aspect-ratio:1/1;
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:250px;
+height:300px;
 border-radius:20px;
 overflow:hidden;
-box-shadow:0 0 25px rgba(255,255,255,0.6);
+box-shadow:0 0 25px pink;
 }
+
 .slideshow img{
 width:100%;
 height:100%;
 object-fit:cover;
+position:absolute;
+animation:slide 12s infinite;
+opacity:0;
 }
 
-.cake{
-font-size:clamp(60px,12vw,90px);
-margin:20px 0;
+.slideshow img:nth-child(1){animation-delay:0s;}
+.slideshow img:nth-child(2){animation-delay:4s;}
+.slideshow img:nth-child(3){animation-delay:8s;}
+
+@keyframes slide{
+0%{opacity:0;}
+10%{opacity:1;}
+30%{opacity:1;}
+40%{opacity:0;}
+100%{opacity:0;}
+}
+
+button{
+position:absolute;
+bottom:50px;
+left:50%;
+transform:translateX(-50%);
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:pink;
+font-size:18px;
 cursor:pointer;
-transition:0.3s;
-}
-.cake:hover{transform:scale(1.1);}
-
-.rose{
-position:fixed;
-top:-50px;
-font-size:22px;
-animation:fall linear infinite;
-}
-@keyframes fall{
-to{transform:translateY(110vh);}
+box-shadow:0 0 15px hotpink;
 }
 
-#letter{
-position:fixed;
-width:90%;
-max-width:420px;
-background:white;
-color:black;
-padding:25px;
-border-radius:20px;
+.letter{
+display:none;
+position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-display:none;
-z-index:8000;
-box-shadow:0 0 30px rgba(0,0,0,0.4);
+background:white;
+padding:25px;
+border-radius:20px;
+width:80%;
+max-width:300px;
+text-align:center;
+box-shadow:0 0 25px red;
 }
 
-.typing{
-white-space:pre-line;
-line-height:1.6;
-font-size:16px;
-min-height:150px;
+canvas{
+position:absolute;
+top:0;
+left:0;
 }
 </style>
 </head>
 
 <body>
 
-<div id="lockScreen">
-<h2>Enter Password ❤️</h2>
-<input type="password" id="pass">
-<button onclick="unlock()">Open Surprise 👑</button>
-</div>
-
-<div class="container">
-<h1 class="glitter">Happy Birthday Sona 👑❤️</h1>
-<div id="countdown"></div>
+<h1>Happy Birthday Sona ❤️</h1>
 
 <div class="slideshow">
-<img id="slide" src="photo1.jpg">
+<img src="IMG-20260213-WA0001.jpg">
+<img src="IMG-20260213-WA0002.jpg">
+<img src="IMG-20260213-WA0003.jpg">
 </div>
 
-<div class="cake" onclick="cutCake()">🎂</div>
-<p id="cakeMsg"></p>
+<button onclick="openLetter()">Only For You ❤️</button>
 
-<button onclick="openLetter()">Open Love Letter 💌</button>
-</div>
-
-<div id="letter">
-<h2>For You, Sona ❤️</h2>
-<div class="typing" id="typedText"></div>
+<div class="letter" id="letter">
+<h2>My Love 💕</h2>
+<p>
+Happy Birthday Meri Jaan ❤️<br><br>
+Tum meri life ka sabse beautiful part ho 💫<br>
+Main hamesha tumhare saath rahunga 💖<br><br>
+I Love You Forever 💕
+</p>
 <button onclick="closeLetter()">Close</button>
 </div>
 
-<canvas id="fireworks"></canvas>
-
-<audio id="bgMusic" loop>
+<audio autoplay loop>
 <source src="music.mp3" type="audio/mpeg">
 </audio>
 
+<canvas id="fireworks"></canvas>
+
 <script>
-function unlock(){
-if(document.getElementById("pass").value==="1502"){
-document.getElementById("lockScreen").style.display="none";
-document.getElementById("bgMusic").play();
-startFireworks();
-}else{alert("Wrong Password 😢");}
-}
-
-/* Countdown */
-var birthday=new Date("Feb 15, 2026 00:00:00").getTime();
-setInterval(function(){
-var now=new Date().getTime();
-var gap=birthday-now;
-if(gap<0){document.getElementById("countdown").innerHTML="🎉 It's Her Special Day! 🎉";return;}
-var d=Math.floor(gap/(1000*60*60*24));
-var h=Math.floor((gap%(1000*60*60*24))/(1000*60*60));
-var m=Math.floor((gap%(1000*60*60))/(1000*60));
-var s=Math.floor((gap%(1000*60))/1000);
-document.getElementById("countdown").innerHTML="⏳ "+d+"d "+h+"h "+m+"m "+s+"s ";
-},1000);
-
-/* Slideshow */
-var images=["photo1.jpg","photo2.jpg","photo3.jpg"];
-var x=0;
-setInterval(function(){
-x=(x+1)%images.length;
-document.getElementById("slide").src=images[x];
-},3000);
-
-/* Roses */
-setInterval(function(){
-let rose=document.createElement("div");
-rose.className="rose";
-rose.style.left=Math.random()*100+"vw";
-rose.style.animationDuration=(Math.random()*3+3)+"s";
-rose.innerHTML="🌹";
-document.body.appendChild(rose);
-setTimeout(()=>{rose.remove();},6000);
-},700);
-
-/* Love Letter */
-var text=`Happy Birthday, Sona ❤️
-
-Tumhari smile hi meri duniya hai.
-Hamesha aise hi khush rehna.
-
-I Love You ❤️`;
-
 function openLetter(){
 document.getElementById("letter").style.display="block";
-let i=0;
-document.getElementById("typedText").innerHTML="";
-let interval=setInterval(()=>{
-document.getElementById("typedText").innerHTML+=text.charAt(i);
-i++;
-if(i>=text.length){clearInterval(interval);}
-},40);
 }
+
 function closeLetter(){
 document.getElementById("letter").style.display="none";
 }
 
-/* Fireworks */
-const canvas=document.getElementById("fireworks");
-const ctx=canvas.getContext("2d");
+var canvas=document.getElementById("fireworks");
+var ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
-window.addEventListener("resize",()=>{
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-});
-let particles=[];
-let fireworksStarted=false;
-function createFirework(x,y,amount=80){
-for(let i=0;i<amount;i++){
+
+var particles=[];
+
+function createFirework(){
+var x=Math.random()*canvas.width;
+var y=Math.random()*canvas.height/2;
+for(var i=0;i<50;i++){
 particles.push({
-x:x,y:y,
-radius:Math.random()*3+1,
-color:`hsl(${Math.random()*360},100%,60%)`,
-speedX:(Math.random()-0.5)*8,
-speedY:(Math.random()-0.5)*8,
-gravity:0.05,
+x:x,
+y:y,
+radius:2,
+color:"hsl("+Math.random()*360+",100%,50%)",
+speedX:(Math.random()-0.5)*5,
+speedY:(Math.random()-0.5)*5,
 life:100
 });
-}}
-function animateFireworks(){
-ctx.fillStyle="rgba(0,0,0,0.15)";
+}
+}
+
+function animate(){
+requestAnimationFrame(animate);
+ctx.fillStyle="rgba(0,0,0,0.2)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
-for(let i=0;i<particles.length;i++){
-let p=particles[i];
+
+for(var i=0;i<particles.length;i++){
+var p=particles[i];
 ctx.beginPath();
 ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
 ctx.fillStyle=p.color;
 ctx.fill();
 p.x+=p.speedX;
 p.y+=p.speedY;
-p.speedY+=p.gravity;
 p.life--;
-if(p.life<=0){particles.splice(i,1);i--;}
+if(p.life<=0){
+particles.splice(i,1);
+i--;
 }
-requestAnimationFrame(animateFireworks);
 }
-animateFireworks();
-function startFireworks(){
-if(fireworksStarted)return;
-fireworksStarted=true;
-setInterval(()=>{
-createFirework(Math.random()*canvas.width,
-Math.random()*canvas.height/2,70);
-},1500);
 }
-function cutCake(){
-document.getElementById("cakeMsg").innerHTML="🎉 Happy Birthday Sona 🎉 I Love You ❤️";
-for(let i=0;i<5;i++){
-setTimeout(()=>{
-createFirework(Math.random()*canvas.width,
-Math.random()*canvas.height/2,120);
-},i*250);
-}}
+
+setInterval(createFirework,800);
+animate();
 </script>
 
 </body>
