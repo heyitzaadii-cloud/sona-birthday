@@ -9,18 +9,31 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, sans-serif;
+font-family:'Segoe UI',sans-serif;
 }
 
 body{
 height:100vh;
 overflow:hidden;
-position:relative;
+display:flex;
+justify-content:center;
+align-items:center;
 color:white;
-text-align:center;
+position:relative;
 }
 
-/* 🔥 Fireworks Background */
+/* 🌫 Background Blur */
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:url("IMG-20260213-WA0000.jpg") center/cover no-repeat;
+filter:blur(12px) brightness(60%);
+z-index:-2;
+}
+
+/* 🎆 Fireworks */
 canvas{
 position:fixed;
 top:0;
@@ -31,69 +44,75 @@ z-index:-1;
 pointer-events:none;
 }
 
-/* 🌫 Blur Background Image */
-body::before{
-content:"";
-position:fixed;
-top:0;
-left:0;
+/* 🔐 Password Screen */
+#passwordScreen{
+position:absolute;
 width:100%;
 height:100%;
-background:url("IMG-20260213-WA0000.jpg") center/cover no-repeat;
-filter:blur(8px);
-z-index:-2;
-}
-
-/* Password Screen */
-#passwordScreen{
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-height:100vh;
-background:rgba(0,0,0,0.6);
+background:rgba(0,0,0,0.8);
 }
 
 input{
 padding:10px;
 border:none;
-border-radius:5px;
+border-radius:8px;
 margin:10px;
 }
 
 button{
-padding:10px 20px;
+padding:10px 25px;
 border:none;
-border-radius:20px;
-background:pink;
-color:black;
+border-radius:25px;
+background:linear-gradient(45deg,pink,hotpink);
+color:white;
 font-weight:bold;
 cursor:pointer;
+transition:0.3s;
 }
 
-/* Main Content */
-#mainContent{
+button:hover{
+transform:scale(1.05);
+}
+
+/* 💎 Main Card */
+.container{
 display:none;
-padding-top:40px;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
+padding:30px;
+border-radius:25px;
+text-align:center;
+box-shadow:0 0 40px rgba(255,0,100,0.4);
+width:320px;
+animation:fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:scale(0.9);}
+to{opacity:1; transform:scale(1);}
 }
 
 h1{
 margin-bottom:20px;
-font-size:30px;
 }
 
+/* Slideshow */
 .slideshow{
-width:250px;
-height:300px;
-margin:auto;
 position:relative;
+width:100%;
+height:350px;
 }
 
 .slideshow img{
+position:absolute;
 width:100%;
 height:100%;
+object-fit:cover;
 border-radius:20px;
-position:absolute;
 opacity:0;
 transition:opacity 1s;
 }
@@ -101,12 +120,29 @@ transition:opacity 1s;
 .slideshow img.active{
 opacity:1;
 }
+
+/* 💌 Love Letter Popup */
+#letter{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:white;
+color:black;
+padding:25px;
+border-radius:20px;
+width:300px;
+text-align:center;
+box-shadow:0 0 30px red;
+z-index:10;
+}
 </style>
 </head>
 
 <body>
 
-<!-- Password Screen -->
+<!-- Password -->
 <div id="passwordScreen">
 <h2>Enter Password ❤️</h2>
 <input type="password" id="pass">
@@ -114,7 +150,7 @@ opacity:1;
 </div>
 
 <!-- Main Content -->
-<div id="mainContent">
+<div class="container" id="mainContent">
 <h1>Only For You 💖</h1>
 
 <div class="slideshow">
@@ -124,19 +160,28 @@ opacity:1;
 </div>
 
 <br>
-<button onclick="alert('I Love You ❤️')">Only For You</button>
+<button onclick="openLetter()">Only For You</button>
+</div>
 
-<audio autoplay loop>
-<source src="music.mp3" type="audio/mpeg">
-</audio>
+<!-- Love Letter -->
+<div id="letter">
+<h3>My Love ❤️</h3>
+<p>
+Happy Birthday Meri Jaan 💖<br><br>
+Tum meri life ka sabse special hissa ho ✨<br>
+Main hamesha tumhare saath rahunga 💕<br><br>
+I Love You Forever ❤️
+</p>
+<br>
+<button onclick="closeLetter()">Close</button>
 </div>
 
 <canvas id="fireworks"></canvas>
 
 <script>
 function checkPass(){
-var password = document.getElementById("pass").value;
-if(password === "1234"){
+var password=document.getElementById("pass").value;
+if(password==="1234"){
 document.getElementById("passwordScreen").style.display="none";
 document.getElementById("mainContent").style.display="block";
 }
@@ -154,6 +199,14 @@ index=(index+1)%slides.length;
 slides[index].classList.add("active");
 },3000);
 
+/* Love Letter */
+function openLetter(){
+document.getElementById("letter").style.display="block";
+}
+function closeLetter(){
+document.getElementById("letter").style.display="none";
+}
+
 /* Fireworks */
 const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
@@ -162,13 +215,16 @@ canvas.height=window.innerHeight;
 
 let particles=[];
 function createFirework(){
+let x=Math.random()*canvas.width;
+let y=Math.random()*canvas.height/2;
 for(let i=0;i<50;i++){
 particles.push({
-x:canvas.width/2,
-y:canvas.height/2,
-speed:Math.random()*5+2,
+x:x,
+y:y,
+speed:Math.random()*4+2,
 angle:Math.random()*2*Math.PI,
-radius:Math.random()*3+1
+radius:Math.random()*3+1,
+color:"hsl("+Math.random()*360+",100%,50%)"
 });
 }
 }
@@ -182,7 +238,7 @@ p.radius*=0.96;
 
 ctx.beginPath();
 ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
-ctx.fillStyle="hsl("+Math.random()*360+",100%,50%)";
+ctx.fillStyle=p.color;
 ctx.fill();
 
 if(p.radius<0.5) particles.splice(i,1);
