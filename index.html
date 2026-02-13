@@ -2,190 +2,195 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Happy Birthday Sona ❤️</title>
+<title>Only For You ❤️</title>
 
 <style>
-body{
+*{
 margin:0;
 padding:0;
-overflow:hidden;
-font-family:cursive;
-background:url("IMG-20260213-WA0000.jpg") no-repeat center center/cover;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
 }
 
-body::before{
-content:"";
-position:absolute;
+body{
+height:100vh;
+overflow:hidden;
+position:relative;
+color:white;
+text-align:center;
+}
+
+/* 🔥 Fireworks Background */
+canvas{
+position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-backdrop-filter:blur(8px);
-background:rgba(0,0,0,0.4);
 z-index:-1;
+pointer-events:none;
+}
+
+/* 🌫 Blur Background Image */
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url("IMG-20260213-WA0000.jpg") center/cover no-repeat;
+filter:blur(8px);
+z-index:-2;
+}
+
+/* Password Screen */
+#passwordScreen{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:rgba(0,0,0,0.6);
+}
+
+input{
+padding:10px;
+border:none;
+border-radius:5px;
+margin:10px;
+}
+
+button{
+padding:10px 20px;
+border:none;
+border-radius:20px;
+background:pink;
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* Main Content */
+#mainContent{
+display:none;
+padding-top:40px;
 }
 
 h1{
-text-align:center;
-color:#fff;
-margin-top:40px;
-font-size:40px;
-text-shadow:0 0 15px pink;
+margin-bottom:20px;
+font-size:30px;
 }
 
 .slideshow{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
 width:250px;
 height:300px;
-border-radius:20px;
-overflow:hidden;
-box-shadow:0 0 25px pink;
+margin:auto;
+position:relative;
 }
 
 .slideshow img{
 width:100%;
 height:100%;
-object-fit:cover;
-position:absolute;
-animation:slide 12s infinite;
-opacity:0;
-}
-
-.slideshow img:nth-child(1){animation-delay:0s;}
-.slideshow img:nth-child(2){animation-delay:4s;}
-.slideshow img:nth-child(3){animation-delay:8s;}
-
-@keyframes slide{
-0%{opacity:0;}
-10%{opacity:1;}
-30%{opacity:1;}
-40%{opacity:0;}
-100%{opacity:0;}
-}
-
-button{
-position:absolute;
-bottom:50px;
-left:50%;
-transform:translateX(-50%);
-padding:12px 25px;
-border:none;
-border-radius:30px;
-background:pink;
-font-size:18px;
-cursor:pointer;
-box-shadow:0 0 15px hotpink;
-}
-
-.letter{
-display:none;
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-background:white;
-padding:25px;
 border-radius:20px;
-width:80%;
-max-width:300px;
-text-align:center;
-box-shadow:0 0 25px red;
+position:absolute;
+opacity:0;
+transition:opacity 1s;
 }
 
-canvas{
-position:absolute;
-top:0;
-left:0;
+.slideshow img.active{
+opacity:1;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Happy Birthday Sona ❤️</h1>
+<!-- Password Screen -->
+<div id="passwordScreen">
+<h2>Enter Password ❤️</h2>
+<input type="password" id="pass">
+<button onclick="checkPass()">Enter</button>
+</div>
+
+<!-- Main Content -->
+<div id="mainContent">
+<h1>Only For You 💖</h1>
 
 <div class="slideshow">
-<img src="IMG-20260213-WA0001.jpg">
+<img src="IMG-20260213-WA0001.jpg" class="active">
 <img src="IMG-20260213-WA0002.jpg">
 <img src="IMG-20260213-WA0003.jpg">
 </div>
 
-<button onclick="openLetter()">Only For You ❤️</button>
-
-<div class="letter" id="letter">
-<h2>My Love 💕</h2>
-<p>
-Happy Birthday Meri Jaan ❤️<br><br>
-Tum meri life ka sabse beautiful part ho 💫<br>
-Main hamesha tumhare saath rahunga 💖<br><br>
-I Love You Forever 💕
-</p>
-<button onclick="closeLetter()">Close</button>
-</div>
+<br>
+<button onclick="alert('I Love You ❤️')">Only For You</button>
 
 <audio autoplay loop>
 <source src="music.mp3" type="audio/mpeg">
 </audio>
+</div>
 
 <canvas id="fireworks"></canvas>
 
 <script>
-function openLetter(){
-document.getElementById("letter").style.display="block";
+function checkPass(){
+var password = document.getElementById("pass").value;
+if(password === "1234"){
+document.getElementById("passwordScreen").style.display="none";
+document.getElementById("mainContent").style.display="block";
+}
+else{
+alert("Wrong Password 😢");
+}
 }
 
-function closeLetter(){
-document.getElementById("letter").style.display="none";
-}
+/* Slideshow */
+let slides=document.querySelectorAll(".slideshow img");
+let index=0;
+setInterval(()=>{
+slides[index].classList.remove("active");
+index=(index+1)%slides.length;
+slides[index].classList.add("active");
+},3000);
 
-var canvas=document.getElementById("fireworks");
-var ctx=canvas.getContext("2d");
+/* Fireworks */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 
-var particles=[];
-
+let particles=[];
 function createFirework(){
-var x=Math.random()*canvas.width;
-var y=Math.random()*canvas.height/2;
-for(var i=0;i<50;i++){
+for(let i=0;i<50;i++){
 particles.push({
-x:x,
-y:y,
-radius:2,
-color:"hsl("+Math.random()*360+",100%,50%)",
-speedX:(Math.random()-0.5)*5,
-speedY:(Math.random()-0.5)*5,
-life:100
+x:canvas.width/2,
+y:canvas.height/2,
+speed:Math.random()*5+2,
+angle:Math.random()*2*Math.PI,
+radius:Math.random()*3+1
 });
 }
 }
 
 function animate(){
-requestAnimationFrame(animate);
-ctx.fillStyle="rgba(0,0,0,0.2)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.clearRect(0,0,canvas.width,canvas.height);
+particles.forEach((p,i)=>{
+p.x+=Math.cos(p.angle)*p.speed;
+p.y+=Math.sin(p.angle)*p.speed;
+p.radius*=0.96;
 
-for(var i=0;i<particles.length;i++){
-var p=particles[i];
 ctx.beginPath();
 ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
-ctx.fillStyle=p.color;
+ctx.fillStyle="hsl("+Math.random()*360+",100%,50%)";
 ctx.fill();
-p.x+=p.speedX;
-p.y+=p.speedY;
-p.life--;
-if(p.life<=0){
-particles.splice(i,1);
-i--;
-}
-}
+
+if(p.radius<0.5) particles.splice(i,1);
+});
+requestAnimationFrame(animate);
 }
 
-setInterval(createFirework,800);
+setInterval(createFirework,1500);
 animate();
 </script>
 
